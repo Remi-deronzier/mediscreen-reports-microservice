@@ -1,4 +1,4 @@
-package deronzier.remi.reportsmicroservice.controller;
+package deronzier.remi.reportsmicroservice.controllers;
 
 import java.util.List;
 
