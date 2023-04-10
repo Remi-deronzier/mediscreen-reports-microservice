@@ -19,6 +19,8 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 
+import deronzier.remi.reportsmicroservice.models.Patient;
+import deronzier.remi.reportsmicroservice.models.RiskLevel;
 import deronzier.remi.reportsmicroservice.services.PdfGeneratorService;
 
 /**
@@ -30,10 +32,12 @@ import deronzier.remi.reportsmicroservice.services.PdfGeneratorService;
 public class PdfGeneratorServiceImpl implements PdfGeneratorService {
 
     /**
+     * @param patient
+     * @param riskLevel
      * @return byte[]
      * @throws MalformedURLException
      */
-    public byte[] generatePDF() throws MalformedURLException {
+    public byte[] generatePDF(Patient patient, RiskLevel riskLevel) throws MalformedURLException {
         // Create a document
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         PdfDocument pdfDocument = new PdfDocument(new PdfWriter(outputStream));
@@ -58,7 +62,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
         Paragraph patientInformationParagraph = buildParagraph("Tableau des informations du patient");
         document.add(patientInformationParagraph);
 
-        Table patientInformationTable = buildTable();
+        Table patientInformationTable = buildTable(patient);
         document.add(patientInformationTable);
 
         document.add(addBigSpacing());
@@ -67,7 +71,7 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
         Paragraph patientRiskSection = buildSectionTitle("Risque patient");
         document.add(patientRiskSection);
 
-        Paragraph patientRiskParagraph = buildParagraph("En danger");
+        Paragraph patientRiskParagraph = buildParagraph(riskLevel.getLabel());
         document.add(patientRiskParagraph);
 
         // Close the document
@@ -91,12 +95,14 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
     }
 
     /**
+     * @param patient
      * @return Table
      */
-    private Table buildTable() {
-        float[] pointColumnWidths = { 150F, 150F, 150F, 150F, 150F, 150F };
+    private Table buildTable(Patient patient) {
+        float[] pointColumnWidths = { 150F, 150F, 150F, 150F, 150F, 150F, 150F };
         Table table = new Table(pointColumnWidths);
 
+        table.addCell(new Cell().add(new Paragraph("ID").setBold()));
         table.addCell(new Cell().add(new Paragraph("Prénom").setBold()));
         table.addCell(new Cell().add(new Paragraph("Nom").setBold()));
         table.addCell(new Cell().add(new Paragraph("Date de naissance").setBold()));
@@ -104,12 +110,13 @@ public class PdfGeneratorServiceImpl implements PdfGeneratorService {
         table.addCell(new Cell().add(new Paragraph("Adresse").setBold()));
         table.addCell(new Cell().add(new Paragraph("Numéro de téléphone").setBold()));
 
-        table.addCell(new Cell().add(new Paragraph("Rémi")));
-        table.addCell(new Cell().add(new Paragraph("DERONZIER")));
-        table.addCell(new Cell().add(new Paragraph("23/03/1998")));
-        table.addCell(new Cell().add(new Paragraph("M")));
-        table.addCell(new Cell().add(new Paragraph("47 rue de la paix")));
-        table.addCell(new Cell().add(new Paragraph("06 06 06 06 06")));
+        table.addCell(new Cell().add(new Paragraph(Long.toString(patient.getId()))));
+        table.addCell(new Cell().add(new Paragraph(patient.getFirstName())));
+        table.addCell(new Cell().add(new Paragraph(patient.getLastName())));
+        table.addCell(new Cell().add(new Paragraph(patient.getDateOfBirth().toString())));
+        table.addCell(new Cell().add(new Paragraph(patient.getSex().toString())));
+        table.addCell(new Cell().add(new Paragraph(patient.getAddress())));
+        table.addCell(new Cell().add(new Paragraph(patient.getPhoneNumber())));
         return table;
     }
 

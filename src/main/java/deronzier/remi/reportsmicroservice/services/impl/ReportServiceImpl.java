@@ -1,5 +1,7 @@
 package deronzier.remi.reportsmicroservice.services.impl;
 
+import java.net.MalformedURLException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,9 @@ public class ReportServiceImpl implements ReportService {
     @Autowired
     private NoteService noteService;
 
+    @Autowired
+    private PdfGeneratorServiceImpl pdfService;
+
     /**
      * @param patientId
      * @return Report
@@ -39,6 +44,19 @@ public class ReportServiceImpl implements ReportService {
         report.setPatient(patient);
         report.setRiskLevel(getRiskLevel(patientId));
         return report;
+    }
+
+    /**
+     * @param patientId
+     * @return byte[]
+     * @throws MalformedURLException
+     * @throws PatientNotFoundException
+     */
+    @Override
+    public byte[] generatePdfReport(long patientId) throws MalformedURLException, PatientNotFoundException {
+        Patient patient = getPatient(patientId);
+        RiskLevel riskLevel = getRiskLevel(patientId);
+        return pdfService.generatePDF(patient, riskLevel);
     }
 
     /**
