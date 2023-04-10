@@ -1,6 +1,7 @@
 package deronzier.remi.reportsmicroservice.models;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 import lombok.Data;
 
@@ -18,4 +19,13 @@ public class Patient {
     private Sex sex;
     private String address;
     private String phoneNumber;
+
+    /**
+     * @return int
+     */
+    public int getAge() {
+        LocalDate now = LocalDate.now();
+        Period periode = Period.between(dateOfBirth, now);
+        return periode.getYears();
+    }
 }

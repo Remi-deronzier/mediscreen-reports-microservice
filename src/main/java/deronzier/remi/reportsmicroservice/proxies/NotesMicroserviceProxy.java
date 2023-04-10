@@ -1,11 +1,11 @@
 package deronzier.remi.reportsmicroservice.proxies;
 
+import java.util.List;
+
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import deronzier.remi.reportsmicroservice.models.Note;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * This interface defines the proxy to the notes microservice
@@ -14,6 +14,7 @@ import deronzier.remi.reportsmicroservice.models.Note;
  */
 @FeignClient(name = "notes-microservice", url = "localhost:8082")
 public interface NotesMicroserviceProxy {
-    @GetMapping(value = "/notes/patient/{patientId}")
-    public Page<Note> findByPatientId(@PathVariable long patientId);
+    @GetMapping("/notes/count-notes-with-triggering-terms/patient/{patientId}")
+    public long countByPatientIdWithContentContainingTriggeringTerms(@PathVariable long patientId,
+            @RequestParam List<String> keywords);
 }

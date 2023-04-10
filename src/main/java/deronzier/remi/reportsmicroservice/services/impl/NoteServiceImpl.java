@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import deronzier.remi.reportsmicroservice.models.Note;
 import deronzier.remi.reportsmicroservice.proxies.NotesMicroserviceProxy;
 import deronzier.remi.reportsmicroservice.services.NoteService;
 
@@ -22,12 +21,12 @@ public class NoteServiceImpl implements NoteService {
 
     /**
      * @param patientId
-     * @param pageable
-     * @return List<Note>
+     * @param keywords
+     * @return long
      */
     @Override
-    public List<Note> findByPatientId(long patientId) {
-        return proxy.findByPatientId(patientId).getContent();
+    public long countByPatientIdWithContentContainingTriggeringTerms(long patientId, List<String> keywords) {
+        return proxy.countByPatientIdWithContentContainingTriggeringTerms(patientId, keywords);
     }
 
 }
