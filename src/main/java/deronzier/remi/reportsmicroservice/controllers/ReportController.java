@@ -1,8 +1,12 @@
 package deronzier.remi.reportsmicroservice.controllers;
 
+import java.net.MalformedURLException;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import deronzier.remi.reportsmicroservice.exceptions.PatientNotFoundException;
@@ -15,6 +19,7 @@ import deronzier.remi.reportsmicroservice.services.ReportService;
  * @author Rémi Deronzier
  */
 @RestController
+@RequestMapping("/reports")
 public class ReportController {
 
     @Autowired
@@ -25,9 +30,23 @@ public class ReportController {
      * @return Report
      * @throws PatientNotFoundException
      */
-    @GetMapping("/{patientId}/report")
-    public Report getReport(@PathVariable long patientId) throws PatientNotFoundException {
+    @PostMapping
+    public Report getReport(@RequestParam long patientId) throws PatientNotFoundException {
         return reportService.generateReport(patientId);
+    }
+
+    /**
+     * @param patientId
+     * @return byte[]
+     * @throws MalformedURLException
+     * @throws PatientNotFoundException
+     */
+    @PostMapping("/pdf")
+    public byte[] exportPdf(@RequestParam long patientId) throws MalformedURLException, PatientNotFoundException {
+        byte[] byteArray = reportService.generatePdfReport(patientId);
+
+        byte[] encodedBytes = Base64.getEncoder().encode(byteArray);
+        return encodedBytes;
     }
 
 }
