@@ -4,7 +4,8 @@ import java.net.MalformedURLException;
 import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import deronzier.remi.reportsmicroservice.services.ReportService;
  */
 @RestController
 @RequestMapping("/reports")
+@CrossOrigin(origins = "*")
 public class ReportController {
 
     @Autowired
@@ -30,7 +32,7 @@ public class ReportController {
      * @return Report
      * @throws PatientNotFoundException
      */
-    @PostMapping
+    @GetMapping
     public Report getReport(@RequestParam long patientId) throws PatientNotFoundException {
         return reportService.generateReport(patientId);
     }
@@ -41,7 +43,7 @@ public class ReportController {
      * @throws MalformedURLException
      * @throws PatientNotFoundException
      */
-    @PostMapping("/pdf")
+    @GetMapping("/pdf")
     public byte[] exportPdf(@RequestParam long patientId) throws MalformedURLException, PatientNotFoundException {
         byte[] byteArray = reportService.generatePdfReport(patientId);
 
