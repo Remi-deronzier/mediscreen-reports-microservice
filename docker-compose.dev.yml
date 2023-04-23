@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+  reports-microservice:
+    image: remax21/reports-microservice
+    env_file: ./.env.dev
+    ports:
+      - 8080:8080
