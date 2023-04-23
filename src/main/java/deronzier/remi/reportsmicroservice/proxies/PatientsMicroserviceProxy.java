@@ -10,10 +10,10 @@ import deronzier.remi.reportsmicroservice.models.Patient;
 
 /**
  * This interface is the proxy to the patient microservice
- * 
+ *
  * @author Rémi Deronzier
  */
-@FeignClient(name = "patients-microservice", url = "localhost:8081")
+@FeignClient(name = "patients-microservice", url = "${patients-microservice.url}")
 public interface PatientsMicroserviceProxy {
     @GetMapping("/patients/{id}")
     public Optional<Patient> getPatientById(@PathVariable long id);

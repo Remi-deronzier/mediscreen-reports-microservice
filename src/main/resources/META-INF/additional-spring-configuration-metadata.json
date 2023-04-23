@@ -1,19 +1,27 @@
-{
-  "properties": [
-    {
-      "name": "label.welcome",
-      "type": "java.lang.String",
-      "description": "Welcome message"
-    },
-    {
-      "name": "label.patient",
-      "type": "java.lang.String",
-      "description": "A description for 'label.patient'"
-    },
-    {
-      "name": "label.not-found",
-      "type": "java.lang.String",
-      "description": "A description for 'label.not-found'"
-    }
-  ]
-}
+{"properties": [
+  {
+    "name": "label.welcome",
+    "type": "java.lang.String",
+    "description": "Welcome message"
+  },
+  {
+    "name": "label.patient",
+    "type": "java.lang.String",
+    "description": "A description for 'label.patient'"
+  },
+  {
+    "name": "label.not-found",
+    "type": "java.lang.String",
+    "description": "A description for 'label.not-found'"
+  },
+  {
+    "name": "notes-microservice.url",
+    "type": "java.lang.String",
+    "description": "The URL of the notes microservice"
+  },
+  {
+    "name": "patients-microservice.url",
+    "type": "java.lang.String",
+    "description": "The URL of the patients microservice"
+  }
+]}
